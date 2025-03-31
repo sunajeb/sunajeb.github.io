@@ -4,6 +4,13 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Added image assets for realistic characters
+let playerImage = new Image();
+playerImage.src = 'player.png';
+
+let enemyImage = new Image();
+enemyImage.src = 'enemy.png';
+
 // Global game variables and constants
 const GRAVITY = 0.5;
 const JUMP_FORCE = -12;
@@ -301,12 +308,24 @@ function draw() {
         }
     });
     
-    // Draw enemies
-    ctx.fillStyle = 'red';
+    // Draw enemies with image (Mario-like)
     currentLevel.enemies.forEach(enemy => {
-        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        if (enemyImage.complete) {
+            ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
+        } else {
+            ctx.fillStyle = 'brown';
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        }
     });
     
+    // Draw player with image (Mario-like)
+    if (playerImage.complete) {
+         ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+    } else {
+         ctx.fillStyle = 'blue';
+         ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
     // Draw bullets
     ctx.fillStyle = 'yellow';
     bullets.forEach(bullet => {
