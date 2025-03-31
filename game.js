@@ -1,4 +1,4 @@
- // Game variables
+// Game variables
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -155,6 +155,13 @@ function checkCollisions() {
         }
     });
     
+    // Check if all coins are collected
+    if (coins.every(coin => coin.collected)) {
+        alert("Congratulations! You've collected all coins!");
+        resetGame();
+        return;
+    }
+    
     // Check enemy collisions
     enemies.forEach(enemy => {
         if (player.x < enemy.x + enemy.width &&
@@ -164,20 +171,12 @@ function checkCollisions() {
             
             // Check if player is jumping on enemy
             if (player.velocityY > 0 && player.y + player.height < enemy.y + enemy.height / 2) {
-                // Remove enemy (in a real game, you might want to respawn it)
                 enemy.y = canvas.height + 100; // Move it off-screen
                 player.velocityY = JUMP_FORCE / 1.5; // Bounce
                 player.score += 20;
             } else {
-                // Player loses a life
-                player.lives--;
-                player.x = 50;
-                player.y = GROUND_HEIGHT - player.height;
-                
-                if (player.lives <= 0) {
-                    alert("Game Over! Your score: " + player.score);
-                    resetGame();
-                }
+                alert("End Game");
+                resetGame();
             }
         }
     });
